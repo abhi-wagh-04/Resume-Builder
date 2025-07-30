@@ -3,6 +3,10 @@ import path from "path";
 import Resume from "../models/Resume.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import AppError from "../utils/AppError.js";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const createResume = catchAsync(async (req, res, next) => {
   const { title } = req.body;
@@ -86,6 +90,7 @@ export const getUserResumes = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({
     status: "success",
+    results: resumes.length,
     resumes,
   });
 });
@@ -135,4 +140,38 @@ export const updateResume = catchAsync(async (req, res, next) => {
   });
 });
 
-export const deleteResume = catchAsync(async (req, res, next) => {});
+export const deleteResume = catchAsync(async (req, res, next) => {
+  const resume = await Resume.findOne({
+    _id: req.params.id,
+    userId: req.user._id,
+  });
+  if (!resume) {
+    return next(
+      new AppError(
+        `Resume not found with id:${req.params.id} or you are not authorized`,
+        404
+      )
+    );
+  }
+  // delete the thumbnailLink and ProfileImageUrl images from uploads folder
+  const uploadsFolder = path.join(__dirname, "..", "uploads");
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+  if (resume.thumbnailLink) {
+    const oldThumbnail = path.join(
+      uploadsFolder,
+      path.basename(resume.thumbnailLink)
+    );
+    if (fs.existsSync(oldThumbnail)) fs.unlinkSync(oldThumbnail);
+  }
+
+  if (resume.profileInfo?.profilePreviewUrl) {
+    const oldProfile = path.join(
+      uploadsFolder,
+      path.basename(resume.profileInfo.profilePreviewUrl)
+    );
+    if (fs.existsSync(oldProfile)) fs.unlinkSync(oldProfile);
+  }
+  await Resume.findByIdAndDelete({ _id: req.params.id, userId: req.user._id });
+  res.status(200).json(null);
+});

@@ -5,21 +5,20 @@ import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
 import Dashboard from "./pages/Home/Dashboard";
 import EditResume from "./pages/ResumeUpdate/EditResume";
+import UserProvider from "./context/userContext";
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signUp" element={<SignUp />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/resume/:resumeId" element={<EditResume />} />
       </Routes>
       <Toaster
         toastOptions={{ className: "", style: { fontSize: "13px" } }}
       ></Toaster>
-    </>
+    </UserProvider>
   );
 }
 
