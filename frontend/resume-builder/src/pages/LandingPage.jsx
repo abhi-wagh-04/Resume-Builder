@@ -4,25 +4,39 @@ import Resume1 from "../assets/Resume1.png";
 import Modal from "../components/Modal";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
+import ProfileInfoCard from "../components/cards/ProfileInfoCard";
 
 function LandingPage() {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [openAuthModel, setOpenAuthModel] = useState(false);
   const [currentPage, setCurrentPage] = useState("login");
 
-  const handleCTA = () => {};
+  const handleCTA = () => {
+    if (!user) {
+      setOpenAuthModel(true);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div className="w-full min-h-full bg-white ">
       <div className="container mx-auto px-4 py-6">
         <header className="flex justify-between items-center mb-16">
           <div className="text-xl font-bold">Resume Builder</div>
-          <button
-            className="bg-purple-100 text-sm font-semibold text-black px-7 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-colors cursor-pointer"
-            onClick={(val) => !setOpenAuthModel(val)}
-          >
-            Login/ SignUp
-          </button>
+          {user ? (
+            <ProfileInfoCard />
+          ) : (
+            <button
+              className="bg-purple-100 text-sm font-semibold text-black px-7 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-colors cursor-pointer"
+              onClick={(val) => !setOpenAuthModel(val)}
+            >
+              Login/ SignUp
+            </button>
+          )}
         </header>
 
         <div className="flex flex-col md:flex-row items-center">

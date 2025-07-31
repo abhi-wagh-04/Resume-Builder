@@ -81,10 +81,20 @@ export const createResume = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getUserResumes = catchAsync(async (req, res, next) => {
-  const resumes = await Resume.find({ userId: req.user._id }).sort({
-    updatedAt: -1,
+export const getAllResumes = catchAsync(async (req, res, next) => {
+  const resumes = await Resume.find();
+  if (!resumes) {
+    return next(new AppError("Resume not found", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    results: resumes.length,
+    resumes,
   });
+});
+
+export const getUserResumes = catchAsync(async (req, res, next) => {
+  const resumes = await Resume.find({ userId: req.user._id });
   if (!resumes) {
     return next(new AppError("Resume not found", 404));
   }

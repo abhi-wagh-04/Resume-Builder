@@ -58,6 +58,7 @@ export const loginUser = catchAsync(async (req, res, next) => {
   if (isMatch) {
     res.status(200).json({
       status: "success",
+      user,
       token: generateToken(user._id),
     });
   } else {

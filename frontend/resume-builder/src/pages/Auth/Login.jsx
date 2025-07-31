@@ -8,12 +8,12 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 
 function Login({ setCurrentPage }) {
+  const { updateUser } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { updateUser } = useContext(UserContext);
   // Handle login Form Submit
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -36,11 +36,12 @@ function Login({ setCurrentPage }) {
         email,
         password,
       });
-
+      console.log(res.data.user);
+      console.log(res.data.token);
       const { token } = res.data;
       if (token) {
         // localStorage.setItem("token", token);
-        updateUser(res.data, token);
+        updateUser(res.data.user, token);
         navigate("/dashboard");
       }
     } catch (err) {

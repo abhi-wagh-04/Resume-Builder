@@ -5,20 +5,23 @@ import { API_PATHS } from "../utils/apiPaths";
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) return;
     const accessToken = localStorage.getItem("token");
     if (!accessToken) {
       setLoading(false);
       return;
     }
+
     const fetchUser = async () => {
       try {
         const res = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE);
-        setUser(res.data);
+        setUser(res.data.user);
       } catch (error) {
         console.log("User not authenticated", error);
         clearUser();
@@ -27,6 +30,7 @@ const UserProvider = ({ children }) => {
       }
     };
 
+    // Even if user exists from localStorage, re-fetch latest
     fetchUser();
   }, []);
 
