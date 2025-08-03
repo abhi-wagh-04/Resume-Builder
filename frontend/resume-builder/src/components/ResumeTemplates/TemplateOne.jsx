@@ -12,6 +12,10 @@ import ContactInfo from "../ResumeSections/ContactInfo";
 import EducationInfo from "../ResumeSections/EducationInfo";
 import { formatYearMonth } from "../../utils/helper";
 import LanguageSection from "../ResumeSections/LanguageSection";
+import WorkExpierence from "../ResumeSections/WorkExpierence";
+import ProjectInfo from "../ResumeSections/ProjectInfo";
+import SkillSection from "../ResumeSections/SkillSection";
+import CertificationInfo from "../ResumeSections/CertificationInfo";
 
 const DEFAULT_THEME = ["#EBFDFF", "#A1F4FD", "#CEFAFE", "#00B8DB", "#4A5565"];
 
@@ -143,7 +147,81 @@ function TemplateOne({ resumeData, colorPalette, containerWidth }) {
             </div>
           </div>
         </div>
-        <div className="col-span-8 pt-10 mr-10 pb-5"></div>
+        <div className="col-span-8 pt-10 mr-10 pb-5">
+          <div>
+            <Title text="Professonal Summary" color={themeColors[1]} />
+            <p className="">{resumeData.profileInfo.summary}</p>
+          </div>
+          <div className="mt-4">
+            <Title text="Work Expierence" color={themeColors[1]} />
+            {resumeData?.workExperience.map((data, i) => (
+              <WorkExpierence
+                key={i}
+                company={data.company}
+                role={data.role}
+                duration={`${formatYearMonth(data.startDate)}-${formatYearMonth(
+                  data.endDate
+                )}`}
+                durationColor={themeColors[4]}
+                description={data.description}
+              />
+            ))}
+          </div>
+          <div className="mt-4">
+            <Title text="Projects" color={themeColors[1]} />
+            {resumeData.projects.map((project, i) => (
+              <ProjectInfo
+                key={i}
+                title={project.title}
+                description={project.description}
+                githubLink={project.github}
+                liveDemoUrl={project.liveDemo}
+                bgColor={themeColors[2]}
+              />
+            ))}
+          </div>
+          <div className="mt-4">
+            <Title text="Skills" color={themeColors[1]} />
+            <SkillSection
+              skills={resumeData.skills}
+              accentColor={themeColors[3]}
+              bgColor={themeColors[2]}
+            />
+          </div>
+          <div className="mt-4">
+            <Title text="Certifications" color={themeColors[1]} />
+            <div className="grid grid-cols-2 gap-2">
+              {resumeData.certifications.map((data, i) => (
+                <CertificationInfo
+                  key={i}
+                  title={data.title}
+                  issuer={data.issuer}
+                  year={data.year}
+                  bgColor={themeColors[2]}
+                />
+              ))}
+            </div>
+          </div>
+          {resumeData.interests.length > 0 && resumeData.interests[0] != "" && (
+            <div className="mt-4">
+              <Title text="Interests" color={themeColors[1]} />
+              <div className="flex items-center flex-wrap gap-3 mt-4">
+                {resumeData?.interests.map((interest, i) => {
+                  if (!interest) return null;
+                  return (
+                    <div
+                      key={i}
+                      className="text-[10px] font-medium py-1 px-3 rounded-lg"
+                      style={{ backgroundColor: themeColors[2] }}
+                    >
+                      {interest}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

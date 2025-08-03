@@ -2,7 +2,7 @@ import Input from "../../../components/Inputs/Input";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 
 function EducationDetailsForm({
-  educationInfo,
+  educatonInfo,
   updateArrayItem,
   addArrayItem,
   removeArrayItem,
@@ -11,7 +11,7 @@ function EducationDetailsForm({
     <div className="px-5 pt-5">
       <h2 className="text-lg font-semibold text-gray-900"></h2>
       <div className="mt-4 flex flex-col gap-4 mb-3">
-        {educationInfo.map((education, index) => (
+        {educatonInfo.map((educaton, index) => (
           <div
             key={index}
             className="border border-gray-200/80 p-4 rounded-lg relative"
@@ -21,7 +21,7 @@ function EducationDetailsForm({
                 label="Degree"
                 placeholder="B.Tech in Computer Science"
                 type="text"
-                value={education.degree || ""}
+                value={educaton.degree || ""}
                 onChange={(e) =>
                   updateArrayItem(index, "degree", e.target.value)
                 }
@@ -30,15 +30,15 @@ function EducationDetailsForm({
                 label="Institution"
                 placeholder="XYZ university"
                 type="text"
-                value={education.institution || ""}
+                value={educaton.institution || ""}
                 onChange={(e) =>
                   updateArrayItem(index, "institution", e.target.value)
                 }
               />
               <Input
                 label="Start Date"
-                type="text"
-                value={education.startDate || ""}
+                type="month"
+                value={educaton.startDate || ""}
                 onChange={(e) =>
                   updateArrayItem(index, "startDate", e.target.value)
                 }
@@ -46,13 +46,13 @@ function EducationDetailsForm({
               <Input
                 label="End Date"
                 type="month"
-                value={education.startDate || ""}
+                value={educaton.startDate || ""}
                 onChange={(e) =>
                   updateArrayItem(index, "endDate", e.target.value)
                 }
               />
             </div>
-            {educationInfo.length > 1 && (
+            {educatonInfo.length > 1 && (
               <button
                 type="button"
                 className="absolute top-3 right-3 text-sm text-red-600 hover:underline cursor-pointer"

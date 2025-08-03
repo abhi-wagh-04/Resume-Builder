@@ -30,7 +30,14 @@ connectDB();
 // Middleware
 app.use(express.json());
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"), {
+    setHeaders: (res, path) => {
+      res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    },
+  })
+);
 
 // Routes
 app.use("/api/auth", authRoutes);

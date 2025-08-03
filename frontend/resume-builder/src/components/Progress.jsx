@@ -1,6 +1,6 @@
 function Progress({ progress = 0, total = 5, color, bgColor }) {
   return (
-    <div className="">
+    <div className="flex gap-1.5">
       {[...Array(total)].map((_, i) => (
         <div
           key={i}

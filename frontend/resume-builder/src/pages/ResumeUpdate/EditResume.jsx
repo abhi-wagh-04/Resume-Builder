@@ -26,6 +26,13 @@ import ProjectsDetailsForm from "./Forms/ProjectsDetailsForm";
 import CertificationInfoForm from "./Forms/CertificationInfoForm";
 import AdditionalInfoForm from "./Forms/AdditionalInfoForm";
 import RenderResume from "../../components/ResumeTemplates/RenderResume";
+import {
+  captureElementAsImage,
+  dataUrltoFile,
+  fixTailwindColors,
+} from "../../utils/helper";
+import ThemeSelector from "./ThemeSelector";
+import Modal from "../../components/Modal";
 
 function EditResume() {
   const { resumeId } = useParams();
@@ -145,14 +152,8 @@ function EditResume() {
         break;
 
       case "education-info":
-        resumeData.education.forEach(
-          ({
-            degree,
-            institution,
-            startDate,
-            endDate,
-          },
-          (index) => {
+        resumeData.educaton.forEach(
+          ({ degree, institution, startDate, endDate }, index) => {
             if (!degree.trim())
               errors.push(`Degree is required in education ${index + 1}`);
             if (!institution.trim())
@@ -161,7 +162,7 @@ function EditResume() {
               errors.push(
                 `Start and End dates are  required in education ${index + 1}`
               );
-          })
+          }
         );
         break;
 
@@ -178,6 +179,11 @@ function EditResume() {
         ) {
           errors.push("At least one interest is required");
         }
+        break;
+
+      case "skills":
+      case "projects":
+      case "certifications":
         break;
 
       default:
@@ -285,12 +291,12 @@ function EditResume() {
       case "education-info":
         return (
           <EducationDetailsForm
-            educationInfo={resumeData?.education}
+            educatonInfo={resumeData?.educaton}
             updateArrayItem={(index, key, value) => {
-              updateArrayItem("education", index, key, value);
+              updateArrayItem("educaton", index, key, value);
             }}
-            addArrayItem={(newItem) => addArrayItem("education", newItem)}
-            removeArrayItem={(index) => removeArrayItem("education", index)}
+            addArrayItem={(newItem) => addArrayItem("educaton", newItem)}
+            removeArrayItem={(index) => removeArrayItem("educaton", index)}
           />
         );
 
@@ -433,10 +439,103 @@ function EditResume() {
     }
   };
 
-  // Upload thumbnail and resume profile img
-  const uploadResumeImages = async () => {};
+  const uploadResumeImages = async () => {
+    try {
+      setIsLoading(true);
 
-  const updateResumeDetails = async (thumbnailLink, profilePreviewUrl) => {};
+      // Log the reference DOM element
+      console.log("🔍 resumeRef.current:", resumeRef.current);
+
+      // 1. Fix Tailwind oklch color issues
+      console.log("🎨 Fixing Tailwind colors...");
+      fixTailwindColors(resumeRef.current);
+
+      // 2. Capture the resume as a base64 image
+      console.log("📸 Capturing resume preview as image...");
+      const imageUrl = await captureElementAsImage(resumeRef.current);
+
+      if (!imageUrl || !imageUrl.startsWith("data:image")) {
+        throw new Error("❌ Image capture failed. Base64 string is invalid.");
+      }
+
+      // 3. Convert the image to a File object
+      console.log("📦 Converting base64 to File...");
+      const thumbnailFile = dataUrltoFile(imageUrl, `resume-${resumeId}.png`);
+
+      // Log file info
+      console.log("📝 Thumbnail File:", {
+        name: thumbnailFile.name,
+        size: thumbnailFile.size,
+        type: thumbnailFile.type,
+      });
+
+      // 4. Prepare profile image and form data
+      const profileImageFile = resumeData?.profileInfo?.profileImg || null;
+
+      const formData = new FormData();
+      if (profileImageFile) formData.append("profileImage", profileImageFile);
+      if (thumbnailFile) formData.append("thumbnail", thumbnailFile);
+
+      // Log form data contents
+      console.log("📤 FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(` - ${key}:`, value);
+      }
+
+      // 5. Upload images to server
+      console.log("🚀 Uploading thumbnail and profile image to server...");
+      const uploadResponse = await axiosInstance.put(
+        API_PATHS.RESUME.UPLOAD_IMAGES(resumeId),
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      const { thumbnailLink, profilePreviewUrl } = uploadResponse.data;
+      console.log("✅ Upload successful. Server returned:");
+      console.log(" - Thumbnail Link:", thumbnailLink);
+      console.log(" - Profile Preview URL:", profilePreviewUrl);
+
+      // 6. Update resume details with links
+      await updateResumeDetails(thumbnailLink, profilePreviewUrl);
+
+      // 7. Success UI
+      toast.success("Resume Updated Successfully!!!");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("❌ Error uploading image:", err);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateResumeDetails = async (thumbnailLink, profilePreviewUrl) => {
+    try {
+      setIsLoading(true);
+
+      const updatedData = {
+        ...resumeData,
+        thumbnailLink: thumbnailLink || "",
+        profileInfo: {
+          ...resumeData.profileInfo,
+          profilePreviewUrl: profilePreviewUrl || "",
+        },
+      };
+
+      // Log final payload being sent
+      console.log("📦 Sending updated resume data to backend:");
+      console.log(JSON.stringify(updatedData, null, 2));
+
+      await axiosInstance.put(API_PATHS.RESUME.UPDATE(resumeId), updatedData);
+
+      console.log("✅ Resume data updated successfully.");
+    } catch (err) {
+      console.error("❌ Error updating resume details:", err);
+      toast.error("Failed to update resume data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Delete Resume
   const handleDeleteResume = async () => {};
@@ -496,7 +595,7 @@ function EditResume() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* <div className="bg-white rounded-lg border border-purple-100 overflow-hidden">
+          <div className="bg-white rounded-lg border border-purple-100 overflow-hidden">
             <StepProgress progress={progress} />
             {renderForm()}
             <div className="mx-5">
@@ -538,18 +637,38 @@ function EditResume() {
                 </button>
               </div>
             </div>
-          </div> */}
-        </div>
-        <div ref={resumeRef} className="">
-          {/** Resume Template */}
-          <RenderResume
-            templateId={resumeData?.template?.theme || ""}
-            resumeData={resumeData}
-            colorPalette={resumeData?.template?.colorPalette || {}}
-            containerWidth={baseWidth}
-          />
+          </div>
+
+          <div ref={resumeRef} className="h-[100vh]">
+            {/** Resume Template */}
+            <RenderResume
+              templateId={resumeData?.template?.theme || ""}
+              resumeData={resumeData}
+              colorPalette={resumeData?.template?.colorPalette || {}}
+              containerWidth={baseWidth}
+            />
+          </div>
         </div>
       </div>
+      <Modal
+        isOpen={openThemeSelector}
+        onClose={() => setOpenThemeSelector(false)}
+        title="Change Theme"
+      >
+        <div className="w-[90vw] h-[80vh]">
+          <ThemeSelector
+            selectedTheme={resumeData?.template}
+            setSelectedTheme={(value) => {
+              setResumeData((prevState) => ({
+                ...prevState,
+                template: value || prevState.template,
+              }));
+            }}
+            resumeData={null}
+            onClose={() => setOpenThemeSelector(false)}
+          />
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }
