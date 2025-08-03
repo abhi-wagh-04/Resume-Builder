@@ -669,6 +669,23 @@ function EditResume() {
           />
         </div>
       </Modal>
+      <Modal
+        isOpen={openPreviewModal}
+        onClose={() => setOpenPreviewModal(false)}
+        title={resumeData.title}
+        showActionBtn
+        actionBtnText="Download"
+        actionBtnIcon={<LuDownload className="" />}
+        onActionClick={() => reactToPrintFn()}
+      >
+        <div ref={resumeDownloadRef} className="w-[45vw] h-[80vh]">
+          <RenderResume
+            templateId={resumeData?.template?.theme || ""}
+            resumeData={resumeData}
+            colorPalette={resumeData?.template?.colorPalette || []}
+          />
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }

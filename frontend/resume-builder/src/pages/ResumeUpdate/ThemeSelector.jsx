@@ -7,6 +7,7 @@ import {
 import { LuCircleCheckBig } from "react-icons/lu";
 import Tabs from "../../components/Tabs";
 import TemplateCard from "../../components/cards/TemplateCard";
+import RenderResume from "../../components/ResumeTemplates/RenderResume";
 
 const TAB_DATA = [{ label: "Templates" }, { label: "Color Palettes" }];
 
@@ -71,7 +72,7 @@ function ThemeSelector({
               resumeTemplates.map((template, index) => (
                 <div className="transform scale-[0.9]">
                   <TemplateCard
-                    key={`templates_${index}`}
+                    key={index}
                     thumbnailImg={template.thumbnailImg}
                     isSelected={selectedTemplate?.index === index}
                     onSelect={() =>
@@ -82,7 +83,7 @@ function ThemeSelector({
               ))}
             {tabValue === "Color Palettes" &&
               themeColorPalette.themeOne.map((colors, index) => (
-                <colorPalette
+                <ColorPalette
                   key={index}
                   colors={colors}
                   isSelected={selectedColorPalette?.index === index}
@@ -94,7 +95,14 @@ function ThemeSelector({
         <div
           className="col-span-12 md:col-span-7 bg-white -mt-3"
           ref={resumeRef}
-        ></div>
+        >
+          <RenderResume
+            templateId={selectedTemplate?.theme || ""}
+            resumeData={resumeData || DUMMY_RESUME_DATA}
+            containerWidth={baseWidth}
+            colorPalette={selectedColorPalette?.colors || []}
+          />
+        </div>
       </div>
     </div>
   );
@@ -102,10 +110,10 @@ function ThemeSelector({
 
 export default ThemeSelector;
 
-const colorPalette = ({ colors, isSelected, onSelect }) => {
+const ColorPalette = ({ colors, isSelected, onSelect }) => {
   return (
     <div
-      className={`h-28 bg-purple-50 flex rounded-lg overflow-hidden border-2 ${
+      className={`h-28 bg-purple-50 flex rounded-lg overflow-hidden border-2 cursor-pointer ${
         isSelected ? "border-purple-500" : "border-none"
       }`}
     >
