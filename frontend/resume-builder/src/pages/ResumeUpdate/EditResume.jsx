@@ -678,7 +678,7 @@ function EditResume() {
         actionBtnIcon={<LuDownload className="" />}
         onActionClick={() => reactToPrintFn()}
       >
-        <div ref={resumeDownloadRef} className="w-[45vw] h-[80vh]">
+        <div ref={resumeDownloadRef} className="w-[98vw] h-[96vh]">
           <RenderResume
             templateId={resumeData?.template?.theme || ""}
             resumeData={resumeData}

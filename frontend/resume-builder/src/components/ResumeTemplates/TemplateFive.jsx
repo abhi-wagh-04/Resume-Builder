@@ -31,7 +31,7 @@ const Title = ({ text, color }) => {
   );
 };
 
-function TemplateTwo({ resumeData, colorPalette, containerWidth }) {
+function TemplateFive({ resumeData, colorPalette, containerWidth }) {
   console.log(containerWidth);
   const themeColors = colorPalette?.length > 0 ? colorPalette : DEFAULT_THEME;
   const resumeRef = useRef(null);
@@ -62,34 +62,14 @@ function TemplateTwo({ resumeData, colorPalette, containerWidth }) {
           {resumeData.profileInfo.designation}
         </p>
         <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-[11px]">
-          <ContactInfo
-            icon={<LuMapPinHouse />}
-            iconBG={themeColors[2]}
-            value={resumeData.contactInfo.location}
-          />
-          <ContactInfo
-            icon={<LuMail />}
-            iconBG={themeColors[2]}
-            value={resumeData.contactInfo.email}
-          />
-          <ContactInfo
-            icon={<LuPhone />}
-            iconBG={themeColors[2]}
-            value={resumeData.contactInfo.phone}
-          />
+          <span>{resumeData.contactInfo.location}</span>
+          <span>{resumeData.contactInfo.email}</span>
+          <span>{resumeData.contactInfo.phone}</span>
           {resumeData.contactInfo.linkedin && (
-            <ContactInfo
-              icon={<RiLinkedinLine />}
-              iconBG={themeColors[2]}
-              value={resumeData.contactInfo.linkedin}
-            />
+            <span>{resumeData.contactInfo.linkedin}</span>
           )}
           {resumeData.contactInfo.website && (
-            <ContactInfo
-              icon={<LuRss />}
-              iconBG={themeColors[2]}
-              value={resumeData.contactInfo.website}
-            />
+            <span>{resumeData.contactInfo.website}</span>
           )}
         </div>
       </div>
@@ -167,30 +147,18 @@ function TemplateTwo({ resumeData, colorPalette, containerWidth }) {
 
         <div className="mt-3">
           <Title text="Skills" color={themeColors[1]} />
-          <div className="flex flex-wrap gap-2 mt-2 text-[11px]">
+          <div className="flex flex-wrap gap-3 mt-2 text-[11px]">
             {resumeData.skills.map((skill, i) => (
-              <span
-                key={i}
-                className="bg-gray-200 px-2 py-1 rounded-md"
-                style={{ backgroundColor: themeColors[2] }}
-              >
-                {skill.name}
-              </span>
+              <span key={i}>{skill.name}</span>
             ))}
           </div>
         </div>
 
         <div className="mt-3">
           <Title text="Languages" color={themeColors[1]} />
-          <div className="flex flex-wrap gap-2 mt-2 text-[11px]">
+          <div className="flex flex-wrap gap-3 mt-2 text-[11px]">
             {resumeData.languages.map((lang, i) => (
-              <span
-                key={i}
-                className="bg-gray-200 px-2 py-1 rounded-md"
-                style={{ backgroundColor: themeColors[2] }}
-              >
-                {lang.name}
-              </span>
+              <span key={i}>{lang.name}</span>
             ))}
           </div>
         </div>
@@ -200,13 +168,7 @@ function TemplateTwo({ resumeData, colorPalette, containerWidth }) {
             <Title text="Interests" color={themeColors[1]} />
             <div className="flex flex-wrap gap-2 mt-2 text-[11px]">
               {resumeData.interests.map((interest, i) => (
-                <span
-                  key={i}
-                  className="bg-gray-200 px-2 py-1 rounded-md"
-                  style={{ backgroundColor: themeColors[2] }}
-                >
-                  {interest}
-                </span>
+                <span key={i}>{interest}</span>
               ))}
             </div>
           </div>
@@ -216,4 +178,4 @@ function TemplateTwo({ resumeData, colorPalette, containerWidth }) {
   );
 }
 
-export default TemplateTwo;
+export default TemplateFive;

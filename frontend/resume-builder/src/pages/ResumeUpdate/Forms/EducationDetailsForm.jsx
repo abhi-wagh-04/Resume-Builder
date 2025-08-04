@@ -46,7 +46,7 @@ function EducationDetailsForm({
               <Input
                 label="End Date"
                 type="month"
-                value={educaton.startDate || ""}
+                value={educaton.endDate || ""}
                 onChange={(e) =>
                   updateArrayItem(index, "endDate", e.target.value)
                 }

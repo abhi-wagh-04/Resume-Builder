@@ -1,6 +1,8 @@
-import TEMPLATE_ONE_IMG from "../assets/template-01.png";
-import TEMPLATE_TWO_IMG from "../assets/template-02.png";
-import TEMPLATE_THREE_IMG from "../assets/template-03.png";
+import TEMPLATE_ONE_IMG from "../assets/template-1.png";
+import TEMPLATE_TWO_IMG from "../assets/template-2.png";
+import TEMPLATE_THREE_IMG from "../assets/template-3.png";
+import TEMPLATE_FOUR_IMG from "../assets/template-4.png";
+import TEMPLATE_FIVE_IMG from "../assets/template-5.png";
 
 export const resumeTemplates = [
   {
@@ -17,6 +19,16 @@ export const resumeTemplates = [
     id: "03",
     thumbnailImg: TEMPLATE_THREE_IMG,
     colorPaletteCode: "themeThree",
+  },
+  {
+    id: "04",
+    thumbnailImg: TEMPLATE_FOUR_IMG,
+    colorPaletteCode: "themeFour",
+  },
+  {
+    id: "05",
+    thumbnailImg: TEMPLATE_FIVE_IMG,
+    colorPaletteCode: "themeFive",
   },
 ];
 
@@ -43,82 +55,98 @@ export const themeColorPalette = {
 
 export const DUMMY_RESUME_DATA = {
   profileInfo: {
-    profileIme: null,
-    fullName: "Prathamesh Patil",
+    profileImg: null,
+    fullName: "Aarav Mehta",
     profilePreviewUrl: "",
-    designation: "Data Analyst",
-    summary: "Expierence with a strong background in Data Analytics.",
+    designation: "Senior Data Analyst",
+    summary:
+      "Detail-oriented Data Analyst with 4+ years of experience in analyzing complex datasets, building interactive dashboards, and driving data-backed decisions. Skilled in Python, SQL, and data visualization tools.",
   },
   contactInfo: {
-    email: "partya@gmail.com",
-    phone: "9876543210",
-    location: "Pune",
-    linkedin: "http://linkedin.com",
-    github: "http://github.com",
-    website: "http://website.com",
+    email: "aarav.mehta@example.com",
+    phone: "+91 9123456789",
+    location: "Mumbai, India",
+    linkedin: "https://linkedin.com/in/aaravmehta",
+    github: "https://github.com/aaravmehta",
+    website: "https://aaravmehta.dev",
   },
-  title: "Data Analyst",
+  title: "Senior Data Analyst Resume",
   workExperience: [
     {
-      company: "Amazon",
-      startDate: "2024-01",
+      company: "Flipkart",
+      startDate: "2022-03",
       endDate: "2024-06",
-      description: "Data Analyst Intern",
+      description:
+        "Led a team of analysts to build predictive models for customer retention and revenue growth. Developed interactive Tableau dashboards that reduced reporting time by 30%.",
+    },
+    {
+      company: "Infosys",
+      startDate: "2020-01",
+      endDate: "2022-02",
+      description:
+        "Worked as a Data Analyst in the retail domain. Designed ETL pipelines and performed exploratory data analysis for client insights.",
+    },
+    {
+      company: "TechNova",
+      startDate: "2018-07",
+      endDate: "2019-12",
+      description:
+        "Entry-level analyst role focusing on cleaning, transforming, and visualizing marketing campaign data using Power BI and Excel.",
     },
   ],
   skills: [
-    {
-      name: "Power-Bi",
-      progress: 80,
-    },
-    {
-      name: "Tableau",
-      progress: 70,
-    },
-    {
-      name: "Python",
-      progress: 90,
-    },
-    {
-      name: "Machine-learning",
-      progress: 70,
-    },
+    { name: "SQL", progress: 95 },
+    { name: "Python", progress: 90 },
+    { name: "Power BI", progress: 85 },
+    { name: "Tableau", progress: 80 },
+    { name: "Excel", progress: 85 },
+    { name: "Machine Learning", progress: 75 },
+    { name: "Data Cleaning", progress: 90 },
   ],
   projects: [
     {
-      title: "Amazon Dashboard",
-      description: "Created an Amazon Dashboard",
-      github: "http://github.com",
-      liveDemo: "http://livedeom.com",
+      title: "E-commerce Sales Dashboard",
+      description:
+        "Built a dynamic dashboard for Flipkart's sales team using Tableau to monitor KPIs and trends across different regions.",
+      github: "https://github.com/aaravmehta/flipkart-sales-dashboard",
+      liveDemo: "https://sales-dashboard-demo.vercel.app",
+    },
+    {
+      title: "Customer Churn Prediction Model",
+      description:
+        "Implemented a machine learning pipeline using logistic regression and random forest to predict customer churn.",
+      github: "https://github.com/aaravmehta/customer-churn-prediction",
+      liveDemo: "",
     },
   ],
   certifications: [
     {
-      title: "Powe-BI expert, Microsoft",
+      title: "Microsoft Certified: Data Analyst Associate",
       issuer: "Microsoft",
-      year: "2024",
+      year: "2023",
+    },
+    {
+      title: "Google Data Analytics Professional Certificate",
+      issuer: "Google",
+      year: "2022",
     },
   ],
   languages: [
-    {
-      name: "English",
-      progress: 80,
-    },
-    {
-      name: "Hindi",
-      progress: 90,
-    },
-    {
-      name: "Marathi",
-      progress: 90,
-    },
+    { name: "English", progress: 95 },
+    { name: "Hindi", progress: 90 },
+    { name: "Gujarati", progress: 85 },
   ],
-  interests: ["Reading", "Cycling"],
+  interests: ["Chess", "Blogging", "Photography"],
   educaton: [
     {
-      degree: "M.Tech, Data Science and Data Analytics",
-      startDate: "2024-02",
-      endDate: "2024-08",
+      degree: "M.Tech in Data Science and Artificial Intelligence",
+      startDate: "2022-08",
+      endDate: "2024-06",
+    },
+    {
+      degree: "B.Tech in Computer Engineering",
+      startDate: "2016-07",
+      endDate: "2020-06",
     },
   ],
 };
