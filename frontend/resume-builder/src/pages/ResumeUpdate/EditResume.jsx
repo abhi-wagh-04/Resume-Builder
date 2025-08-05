@@ -136,20 +136,20 @@ function EditResume() {
           errors.push("Valid 10-digit phone number is required");
         break;
 
-      case "work-experience":
-        resumeData.workExperience.forEach(
-          ({ company, role, startDate, endDate }, index) => {
-            // if (!company.trim())
-            //   errors.push(`Company is required in experience ${index + 1}`);
-            if (!company.trim() && !role.trim())
-              errors.push(`Role is required in experience ${index + 1} `);
-            if (!company.trim() && (!startDate || !endDate))
-              errors.push(
-                `Start and End dates are required in experience ${index + 1}`
-              );
-          }
-        );
-        break;
+      // case "work-experience":
+      //   resumeData.workExperience.forEach(
+      //     ({ company, role, startDate, endDate }, index) => {
+      //       // if (!company.trim())
+      //       //   errors.push(`Company is required in experience ${index + 1}`);
+      //       if (!company.trim() && !role.trim())
+      //         errors.push(`Role is required in experience ${index + 1} `);
+      //       if (!company.trim() && (!startDate || !endDate))
+      //         errors.push(
+      //           `Start and End dates are required in experience ${index + 1}`
+      //         );
+      //     }
+      //   );
+      //   break;
 
       case "education-info":
         resumeData.educaton.forEach(
@@ -166,22 +166,23 @@ function EditResume() {
         );
         break;
 
+      // case "additionalInfo":
+      // if (
+      //   resumeData.languages.length === 0 ||
+      //   !resumeData.languages[0].name?.trim()
+      // ) {
+      //   errors.push("At least one language is required");
+      // }
+      // if (
+      //   resumeData.interests.length === 0 ||
+      //   !resumeData.interests[0].trim()
+      // ) {
+      //   errors.push("At least one interest is required");
+      // }
+      // break;
       case "additionalInfo":
-        if (
-          resumeData.languages.length === 0 ||
-          !resumeData.languages[0].name?.trim()
-        ) {
-          errors.push("At least one language is required");
-        }
-        if (
-          resumeData.interests.length === 0 ||
-          !resumeData.interests[0].trim()
-        ) {
-          errors.push("At least one interest is required");
-        }
-        break;
-
       case "skills":
+      case "work-experience":
       case "projects":
       case "certifications":
         break;
@@ -538,7 +539,19 @@ function EditResume() {
   };
 
   // Delete Resume
-  const handleDeleteResume = async () => {};
+  const handleDeleteResume = async () => {
+    try {
+      setIsLoading(true);
+      await axiosInstance.delete(API_PATHS.RESUME.DELETE(resumeId));
+      toast.success("Resume Deleted Successfully!!!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("❌ Error deleting resume details:", error);
+      toast.error("Failed to delete resume data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   //Download Resume
   const reactToPrintFn = useReactToPrint({ contentRef: resumeDownloadRef });
