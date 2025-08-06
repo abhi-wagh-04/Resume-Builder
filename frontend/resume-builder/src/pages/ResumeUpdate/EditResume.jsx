@@ -33,6 +33,7 @@ import {
 } from "../../utils/helper";
 import ThemeSelector from "./ThemeSelector";
 import Modal from "../../components/Modal";
+import PublicationDetailsForm from "./Forms/PublicationDetailsForm";
 
 function EditResume() {
   const { resumeId } = useParams();
@@ -99,6 +100,15 @@ function EditResume() {
         description: "",
         github: "",
         liveDemo: "",
+      },
+    ],
+    publications: [
+      {
+        title: "",
+        conference: "",
+        year: "",
+        description: "", // Optional: Short summary of the work
+        link: "", // Optional: DOI, URL, arXiv link, etc.
       },
     ],
     certifications: [
@@ -181,6 +191,7 @@ function EditResume() {
       // }
       // break;
       case "additionalInfo":
+      case "publications":
       case "skills":
       case "work-experience":
       case "projects":
@@ -210,6 +221,7 @@ function EditResume() {
       "education-info",
       "skills",
       "projects",
+      "publications",
       "certifications",
       "additionalInfo",
     ];
@@ -325,6 +337,18 @@ function EditResume() {
           />
         );
 
+      case "publications":
+        return (
+          <PublicationDetailsForm
+            publicationInfo={resumeData?.publications}
+            updateArrayItem={(index, key, value) => {
+              updateArrayItem("publications", index, key, value);
+            }}
+            addArrayItem={(newItem) => addArrayItem("publications", newItem)}
+            removeArrayItem={(index) => removeArrayItem("publications", index)}
+          />
+        );
+
       case "certifications":
         return (
           <CertificationInfoForm
@@ -429,6 +453,7 @@ function EditResume() {
           educaton: resumeInfo?.educaton || prevState?.educaton,
           skills: resumeInfo?.skills || prevState?.skills,
           projects: resumeInfo?.projects || prevState?.projects,
+          publications: resumeInfo?.publications || prevState?.publications,
           certifications:
             resumeInfo?.certifications || prevState?.certifications,
           languages: resumeInfo?.languages || prevState?.languages,

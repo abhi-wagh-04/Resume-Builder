@@ -4,6 +4,7 @@ import TemplateThree from "./TemplateThree";
 import TemplateTwo from "./TemplateFour";
 import TemplateFive from "./TemplateFive";
 import TemplateSix from "./TemplateSix";
+import TemplateSeven from "./TemplateSeven";
 
 function RenderResume({
   templateId,
@@ -60,9 +61,17 @@ function RenderResume({
           containerWidth={containerWidth}
         />
       );
+    case "07":
+      return (
+        <TemplateSeven
+          resumeData={resumeData}
+          colorPalette={colorPalette}
+          containerWidth={containerWidth}
+        />
+      );
     default:
       return (
-        <TemplateOne
+        <TemplateSix
           resumeData={resumeData}
           colorPalette={colorPalette}
           containerWidth={containerWidth}

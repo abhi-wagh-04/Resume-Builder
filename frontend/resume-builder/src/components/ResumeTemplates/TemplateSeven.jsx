@@ -32,7 +32,7 @@ const Title = ({ text, color }) => {
   );
 };
 
-function TemplateSix({ resumeData, colorPalette, containerWidth }) {
+function TemplateSeven({ resumeData, colorPalette, containerWidth }) {
   console.log(containerWidth);
   const themeColors = colorPalette?.length > 0 ? colorPalette : DEFAULT_THEME;
   const resumeRef = useRef(null);
@@ -59,44 +59,102 @@ function TemplateSix({ resumeData, colorPalette, containerWidth }) {
         height: "auto",
       }}
     >
-      <div className="px-6 pt-6 pb-3 text-center">
-        <h2 className="text-lg font-bold">{resumeData.profileInfo.fullName}</h2>
-        <div className="text-[11px] flex justify-center font-semibold flex-wrap gap-x-1 ">
-          <span>{resumeData.contactInfo.email}</span>
-          <span>|</span>
-          <span>{resumeData.contactInfo.phone}</span>
-          <span>|</span>
-          <span>
+      <div className="px-6 pt-6 pb-3">
+        <div className="flex justify-between text-[11px] flex-wrap">
+          {/* Left section */}
+          <div className="text-left">
+            <h2 className="text-lg font-bold">
+              {resumeData.profileInfo.fullName}
+            </h2>
+
             {resumeData.contactInfo.github && (
-              <a
-                href={resumeData.contactInfo.github}
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub
-              </a>
+              <div>
+                <span className="font-semibold">GitHub: </span>
+                <a
+                  href={resumeData.contactInfo.github}
+                  className="text-blue-600 hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {resumeData.contactInfo.github}
+                </a>
+              </div>
             )}
-          </span>
-          {resumeData.contactInfo.linkedin && (
-            <>
-              <span>|</span>
-              <span>{resumeData.contactInfo.linkedin}</span>
-            </>
-          )}
-          {/* {resumeData.contactInfo.website && (
-            <>
-              <span>|</span>
-              <span>{resumeData.contactInfo.website}</span>
-            </>
-          )} */}
+
+            {resumeData.contactInfo.linkedin && (
+              <div>
+                <span className="font-semibold">LinkedIn: </span>
+                {resumeData.contactInfo.linkedin}
+              </div>
+            )}
+          </div>
+
+          {/* Right section */}
+          <div className="text-right">
+            <div>
+              <span className="font-semibold">Email: </span>
+              {resumeData.contactInfo.email}
+            </div>
+            <div>
+              <span className="font-semibold">Phone: </span>
+              {resumeData.contactInfo.phone}
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="px-6 pb-3">
+      {/* <div className="px-6 pb-3">
         <p className="text-[12px]">{resumeData.profileInfo.summary}</p>
-      </div>
+      </div> */}
 
+      {/* EDUCATION */}
+      {resumeData.educaton.length > 0 && (
+        <div className="px-6 pb-3">
+          <h2 className="text-[15px] font-bold text-gray-800 mb-1">
+            Education
+          </h2>
+          <hr className="border-t-2 border-gray-400 mb-2" />
+          {resumeData.educaton.map((edu, index) => (
+            <div key={index} className="mb-2">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-semibold text-gray-800 inline">
+                    {edu.institution},{" "}
+                  </p>
+                  <p className="font-medium text-gray-700 inline">
+                    {edu.degree}
+                  </p>
+                </div>
+                <p className="text-[11px] text-gray-600 text-right">
+                  {new Date(edu.startDate).toLocaleString("default", {
+                    month: "long",
+                    year: "numeric",
+                  })}{" "}
+                  -{" "}
+                  {new Date(edu.endDate).toLocaleString("default", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </p>
+              </div>
+              <p className="text-[12px] text-gray-700">{edu.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* SKILLS */}
+      {resumeData.skills.length > 0 && (
+        <div className="px-6 pb-3">
+          <span className="text-[15px] font-bold text-gray-800">Skills</span>
+          <hr className="border-t-2 border-gray-400 mb-2 w-full" />
+          <span className="text-[12px] block">
+            {resumeData.skills.map((skill) => skill.name).join(", ")}
+          </span>
+        </div>
+      )}
+
+      {/* EXPERIENCE */}
       {resumeData.workExperience.some(
         (exp) =>
           exp.company.trim() !== "" ||
@@ -152,109 +210,42 @@ function TemplateSix({ resumeData, colorPalette, containerWidth }) {
         </div>
       )}
 
-      <div className="px-6 pb-3">
-        <h2 className="text-[15px] font-bold text-gray-800 mb-1">Projects</h2>
-        <hr className="border-t-2 border-gray-400 mb-2" />
-        {resumeData.projects.map((project, index) => (
-          <div key={index} className="mb-2">
-            <div className="flex justify-between items-center">
-              <p className="font-semibold text-gray-800 text-[13px]">
-                {project.title}
-              </p>
-              <div className="flex gap-2 text-[11px] ">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    className="text-gray-600 hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    GitHub
-                  </a>
-                )}
-                {project.website && (
-                  <a
-                    href={project.website}
-                    className="text-gray-600 hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Website
-                  </a>
-                )}
-              </div>
-            </div>
-            <ul className="list-disc pl-4 text-[12px] mt-1 space-y-0.5 leading-snug">
-              {project.description
-                .split(".")
-                .map((point, i) => point.trim())
-                .filter((point) => point.length > 0)
-                .map((point, i) => (
-                  <li key={i}>{point}.</li>
-                ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div className="px-6 pb-3">
-        <h2 className="text-[15px] font-bold text-gray-800 mb-1">Education</h2>
-        <hr className="border-t-2 border-gray-400 mb-2" />
-        {resumeData.educaton.map((edu, index) => (
-          <div key={index} className="mb-2">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="font-semibold text-gray-800 inline">
-                  {edu.degree},{" "}
-                </p>
-                <p className="font-medium text-gray-700 inline">
-                  {edu.institution}
-                </p>
-              </div>
-              <p className="text-[11px] text-gray-600 text-right">
-                {new Date(edu.startDate).toLocaleString("default", {
-                  month: "long",
-                  year: "numeric",
-                })}{" "}
-                -{" "}
-                {new Date(edu.endDate).toLocaleString("default", {
-                  month: "long",
-                  year: "numeric",
-                })}
-              </p>
-            </div>
-            <p className="text-[12px] text-gray-700">{edu.description}</p>
-          </div>
-        ))}
-      </div>
-
-      {resumeData.publications && resumeData.publications.length > 0 && (
+      {/* PROJECTS */}
+      {resumeData.projects.length > 0 && (
         <div className="px-6 pb-3">
-          <h2 className="text-[15px] font-bold text-gray-800 mb-1">
-            Publications
-          </h2>
+          <h2 className="text-[15px] font-bold text-gray-800 mb-1">Projects</h2>
           <hr className="border-t-2 border-gray-400 mb-2" />
-          {resumeData.publications.map((pub, index) => (
-            <div key={index} className="mb-3">
-              <p className="text-[13px] font-semibold text-gray-900">
-                {pub.link ? (
-                  <a
-                    href={pub.link}
-                    className="hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {pub.title}
-                  </a>
-                ) : (
-                  pub.title
-                )}
-              </p>
-              <p className="text-[12px] text-gray-700 italic">
-                {pub.conference}, {pub.year}
-              </p>
+          {resumeData.projects.map((project, index) => (
+            <div key={index} className="mb-2">
+              <div className="flex justify-between items-center">
+                <p className="font-semibold text-gray-800 text-[13px]">
+                  {project.title}
+                </p>
+                <div className="flex gap-2 text-[11px]">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                  {project.website && (
+                    <a
+                      href={project.website}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Website
+                    </a>
+                  )}
+                </div>
+              </div>
               <ul className="list-disc pl-4 text-[12px] mt-1 space-y-0.5 leading-snug">
-                {pub.description
+                {project.description
                   .split(".")
                   .map((point, i) => point.trim())
                   .filter((point) => point.length > 0)
@@ -281,21 +272,11 @@ function TemplateSix({ resumeData, colorPalette, containerWidth }) {
           {resumeData.certifications.map((cert, index) => (
             <div key={index} className="flex justify-between text-[12px] mb-1">
               <span>{cert.title}</span>
-              <span className="text-[11px] text-gray-600 text-right">
+              <span className="text-right">
                 {cert.issuer}, {cert.year}
               </span>
             </div>
           ))}
-        </div>
-      )}
-
-      {resumeData.skills.length > 0 && (
-        <div className="px-6 pb-3">
-          <span className="text-[15px] font-bold text-gray-800">Skills:</span>
-          <hr className="border-t-2 border-gray-400 mb-2 w-full" />
-          <span className="text-[12px] block">
-            {resumeData.skills.map((skill) => skill.name).join(", ")}
-          </span>
         </div>
       )}
 
@@ -328,4 +309,4 @@ function TemplateSix({ resumeData, colorPalette, containerWidth }) {
   );
 }
 
-export default TemplateSix;
+export default TemplateSeven;

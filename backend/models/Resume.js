@@ -63,6 +63,15 @@ const ResumeSchema = new mongoose.Schema(
         liveDemo: String,
       },
     ],
+    publications: [
+      {
+        title: { type: String },
+        conference: { type: String },
+        year: { type: Number },
+        description: { type: String }, // Optional: Short summary of the work
+        link: { type: String }, // Optional: DOI, URL, arXiv link, etc.
+      },
+    ],
     certifications: [
       {
         title: String,
